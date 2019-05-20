@@ -35,16 +35,21 @@ Blockchain.prototype.getLastBlock = function() {
 	return this.chain[this.chain.length -1];
 };
 
-Blockchain.prototype.createNewTransaction = function(amount,sender, recipient) {
+Blockchain.prototype.createNewTransaction = function(amount, sender, recipient) {
 	const newTransaction = {
 		amount: amount,
 		sender: sender,
-		recipient: recipient
+		recipient: recipient,
+		transactionId: uuid().split('-').join('')
 	};
 
-	this.newTransactions.push(newTransaction);
+	return newTransaction;
+};
 
-	return this.getLastBlock()['index'] + 1
+
+Blockchain.prototype.addTransactionToPendingTransactions = function(transactionObj) {
+	this.pendingTransactions.push(transactionObj);
+	return this.getLastBlock()['index'] + 1;
 };
 
 Blockchain.prototype.hashBlock = function(previousBlockHash, currentBlockData, nonce) {
